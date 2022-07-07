@@ -1,4 +1,4 @@
-# ChatBot
+# Pathology Color DeConvolution
 
 ## Poetry installation:
 
