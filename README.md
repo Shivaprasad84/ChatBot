@@ -1,6 +1,9 @@
 # Pathology Color DeConvolution
 
+## Python
+- `version needed: 3.7.8`
 ## Poetry installation:
+
 
 ```bash
 $ pip install --user poetry
@@ -18,7 +21,7 @@ $ poetry config --local virtualenvs.in-project true
 # Init Shell
 $ poetry shell
 
-# Install packages and dependencies from toml file 
+# Install packages and dependencies from toml file
 $ poetry install
 
 # Add new packages
