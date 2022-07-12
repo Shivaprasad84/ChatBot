@@ -1,6 +1,6 @@
 import uvicorn
 
-from color_deconvolution import eosin_channel, hematoxylin_channel
+from color_deconvolution import eosin_channel, hematoxylin_channel, perform_segmentation
 from core import create_app
 from schemas import ImageData
 from utils import get_b64_image, save_image
@@ -22,6 +22,15 @@ def get_eosin_image(image_id):
     image_name, image_type = images.get(image_id)
     image = eosin_channel(image_name, image_type)
     b64Image = get_b64_image(image)
+    return {'b64Image': b64Image}
+
+
+@app.get('/Segmentation')
+def segmentation(image_id):
+    image_name, image_type = images.get(image_id)
+    image = hematoxylin_channel(image_name, image_type)
+    segmented = perform_segmentation(image, type)
+    b64Image = get_b64_image(segmented)
     return {'b64Image': b64Image}
 
 

@@ -5,8 +5,9 @@ from histolab.filters.image_filters import EosinChannel, HematoxylinChannel
 
 from PIL import Image
 
-def perform_segmentation(name, type):
-    image_path = f'images/{name}_deconv.{type}'
+def perform_segmentation(image):
+    name, type = image.split('.')
+    image_path = f'images/{image}'
     img = cv2.imread(image_path)
     gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
     ret, thresh = cv2.threshold(gray,0,255,cv2.THRESH_BINARY_INV+cv2.THRESH_OTSU)
@@ -37,7 +38,11 @@ def perform_segmentation(name, type):
     markers = cv2.watershed(img,markers)
     img[markers == -1] = [0,0,255]
 
-    Image.fromarray(img).save(f'images/{name}_segmented.{type}')
+    # Crop  to remove border
+    w, h, _ = img.shape
+    crop_img = img[1:w - 1, 1:h - 1]
+    res = Image.fromarray(crop_img)
+    res.save(f'images/{name}_segmented.{type}')
     return f'{name}_segmented.{type}'
 
 
@@ -59,7 +64,7 @@ def hematoxylin_channel(name, type):
     channel = HematoxylinChannel()
     result = apply_color_deconvolution(image, channel)
     result.save(f'images/{name}_deconv.{type}')
-    return perform_segmentation(name, type)
+    return f'{name}_deconv.{type}'
 
 
 def eosin_channel(name, type):
